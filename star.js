@@ -12,11 +12,11 @@ export default async function handler(req, res) {
     const db = client.db('myDatabase');
     const collection = db.collection('stars');
     
-    // Increment star count
+    // Increment star count in MongoDB
     await collection.updateOne({}, { $inc: { count: 1 } }, { upsert: true });
 
     // Get updated star count
-    const count = await collection.countDocuments();
+    const count = await collection.findOne();
 
     res.status(200).json({ count });
   } catch (error) {
