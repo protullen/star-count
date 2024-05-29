@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   try {
     // Connect to MongoDB database
     const { MongoClient } = require('mongodb');
-    const uri = "mongodb+srv://wroxen240:<password>@cluster0.zdudrwn.mongodb.net/?retryWrites=true&w=majority";
+    const uri = "mongodb+srv://wroxen240:Yv16vwHePW31hCRC@cluster0.zdudrwn.mongodb.net/?retryWrites=true&w=majority";
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
 
