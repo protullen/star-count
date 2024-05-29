@@ -1,18 +1,24 @@
+// MongoDB connection setup
+const { MongoClient } = require('mongodb');
+const uri = "mongodb+srv://wroxen240:Yv16vwHePW31hCRC@cluster0.zdudrwn.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 export default async function handler(req, res) {
   try {
-    // Connect to MongoDB database
-    const { MongoClient } = require('mongodb');
-    const uri = "mongodb+srv://wroxen240:Yv16vwHePW31hCRC@cluster0.zdudrwn.mongodb.net/?retryWrites=true&w=majority";
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    await client.connect();
+    if (!client.isConnected()) {
+      await client.connect();
+    }
 
-    // Code to star the GitHub repository
-    // ...
+    const db = client.db('myDatabase');
+    const collection = db.collection('stars');
+    
+    // Increment star count
+    await collection.updateOne({}, { $inc: { count: 1 } }, { upsert: true });
 
-    // Close the database connection
-    await client.close();
+    // Get updated star count
+    const count = await collection.countDocuments();
 
-    res.status(200).json({ message: 'Repository starred successfully' });
+    res.status(200).json({ count });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
