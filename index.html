@@ -3,12 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Repository Star</title>
+  <title>Website Star Counter</title>
 </head>
 <body>
-  <h1>Star This Repository</h1>
-  <form action="/star" method="POST">
-    <button type="submit">Star</button>
-  </form>
+  <h1>Star This Website</h1>
+  <p>Total Stars: <span id="starCount">Loading...</span></p>
+  <button id="starButton">Star</button>
+
+  <script>
+    // Fetch initial star count
+    fetch('/api/star-count')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('starCount').textContent = data.count;
+      });
+
+    // Add event listener to star button
+    document.getElementById('starButton').addEventListener('click', function() {
+      // Increment star count
+      fetch('/api/star', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('starCount').textContent = data.count;
+        });
+    });
+  </script>
 </body>
 </html>
